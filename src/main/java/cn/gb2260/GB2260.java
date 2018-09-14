@@ -147,19 +147,27 @@ public class GB2260 {
         return rv;
     }
 
+    public static void printSql(String code,String name,String fullName,String parentCode ){
+        parentCode = parentCode == null?"100000":parentCode;
+        System.out.println("insert into tb_sys_area VALUES('"+code+"','"+name+"','"+parentCode+"',\t'"+fullName+ "','201809');");
+    }
+
     public static void main(String[] args) {
         System.out.println();
         GB2260 g = new GB2260();
         for(Division division : g.provinces){
-            System.out.println(division.getCode()+"\t"+division.getName()+"\t"+100000+"\t"+division.getName());
+//            System.out.println(division.getCode()+"\t"+division.getName()+"\t"+100000+"\t"+division.getName());
+            printSql(division.getCode(),division.getName(),division.getName(),null);
             ArrayList<Division> cityList =  g.getPrefectures(division.getCode());
             for(Division city : cityList){
                 if(!city.getName().equalsIgnoreCase(city.getProvince())){
-                    System.out.println(city.getCode()+"\t"+city.getName()+"\t"+division.getCode()+"\t"+division.getName()+" "+city.getName());
+//                    System.out.println(city.getCode()+"\t"+city.getName()+"\t"+division.getCode()+"\t"+division.getName()+" "+city.getName());
+                    printSql(city.getCode(),city.getName(),division.getName()+" "+city.getName(),division.getCode());
                     ArrayList<Division> countyList =  g.getCounties(city.getCode());
                     for(Division county : countyList){
                         if(!county.getName().equalsIgnoreCase(county.getPrefecture())){
-                            System.out.println(county.getCode()+"\t"+county.getName()+"\t"+city.getCode()+"\t"+division.getName()+" "+city.getName()+" "+county.getName());
+//                            System.out.println(county.getCode()+"\t"+county.getName()+"\t"+city.getCode()+"\t"+division.getName()+" "+city.getName()+" "+county.getName());
+                            printSql(county.getCode(),county.getName(),division.getName()+" "+city.getName()+" "+county.getName(),city.getCode());
                         }
                     }
                 }
